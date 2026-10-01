@@ -16,6 +16,12 @@ body {
   overflow-x: hidden;
 }
 
+/* High-fidelity crisp image rendering across high-DPI displays */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  content-visibility: auto;
+}
+
 /* Custom sleek scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
