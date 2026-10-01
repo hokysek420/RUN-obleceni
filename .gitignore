@@ -19,6 +19,9 @@ node_modules/
 *.log
 cookies.txt
 cust_cookie.txt
+*.db-wal
+*.db-shm
+scratch/
 
 # Local env files
 .env*.local

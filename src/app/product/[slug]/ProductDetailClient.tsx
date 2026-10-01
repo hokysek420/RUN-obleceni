@@ -676,6 +676,56 @@ export default function ProductDetailClient({
           </div>
         </div>
 
+        {/* DEDICATED REAL PRODUCT VIDEO SHOWCASE (FIT & MOVEMENT) */}
+        {product.video_url && (
+          <div className="mt-20 pt-12 border-t border-[#1f1f26]">
+            <div className="max-w-4xl mx-auto">
+              <div className="text-center space-y-2 mb-8">
+                <span className="text-[10px] font-mono tracking-widest uppercase text-cyan-400 flex items-center justify-center gap-1.5">
+                  <Video className="w-3.5 h-3.5" />
+                  <span>VIDEO UKÁZKA STŘIHU & POHYBU</span>
+                </span>
+                <h3 className="font-display text-2xl sm:text-3xl uppercase tracking-tight text-white">
+                  SILUETA V POHYBU
+                </h3>
+                <p className="text-xs text-zinc-400 font-mono max-w-xl mx-auto">
+                  Autentické video zachycující střih, chování těžkého materiálu, strukturu tkaniny a proporce oděvu v reálném pohybu.
+                </p>
+              </div>
+
+              <div className="relative aspect-video rounded-xl overflow-hidden border border-[#272732] shadow-2xl bg-black">
+                <video
+                  src={product.video_url}
+                  controls
+                  loop
+                  muted
+                  playsInline
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6 text-center text-xs font-mono">
+                <div className="p-3.5 bg-[#111116] border border-[#222228] rounded">
+                  <span className="text-zinc-500 block text-[10px] uppercase">STŘIH</span>
+                  <span className="text-white font-bold truncate block mt-0.5">{product.fit || 'Boxy Oversized'}</span>
+                </div>
+                <div className="p-3.5 bg-[#111116] border border-[#222228] rounded">
+                  <span className="text-zinc-500 block text-[10px] uppercase">GRAMÁŽ</span>
+                  <span className="text-white font-bold truncate block mt-0.5">{product.grammage || '550 GSM'}</span>
+                </div>
+                <div className="p-3.5 bg-[#111116] border border-[#222228] rounded">
+                  <span className="text-zinc-500 block text-[10px] uppercase">HARDWARE</span>
+                  <span className="text-white font-bold truncate block mt-0.5">RUN Metal Zipper</span>
+                </div>
+                <div className="p-3.5 bg-[#111116] border border-[#222228] rounded">
+                  <span className="text-zinc-500 block text-[10px] uppercase">MODEL</span>
+                  <span className="text-white font-bold truncate block mt-0.5">185 cm • Velikost L</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* RELATED PRODUCTS */}
         {relatedProducts.length > 0 && (
           <div className="mt-24 pt-12 border-t border-[#1f1f26]">

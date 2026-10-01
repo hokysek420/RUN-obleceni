@@ -2,7 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   experimental: {
-    serverComponentsExternalPackages: ['better-sqlite3', 'sharp'],
+    serverComponentsExternalPackages: ['better-sqlite3', 'sql.js', 'sharp'],
     outputFileTracingIncludes: {
       '/**': ['./data/run.db'],
     },

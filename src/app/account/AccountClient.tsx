@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   User,
   Package,
@@ -29,6 +30,10 @@ interface AccountClientProps {
 }
 
 export default function AccountClient({ userOrders, userReturns, allProducts }: AccountClientProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const isVerified = searchParams.get('verified') === 'true';
+
   const { user, loading, login, logout, refreshUser } = useAuth();
   const { wishlist, removeFromWishlist } = useWishlist();
   const { formatPrice } = useCurrency();
@@ -115,7 +120,11 @@ export default function AccountClient({ userOrders, userReturns, allProducts }: 
       const data = await res.json();
       if (res.ok && data.user) {
         login(data.user);
-        window.location.reload();
+        if (data.needsVerification) {
+          router.push(`/auth/verify?email=${encodeURIComponent(regEmail)}`);
+        } else {
+          window.location.reload();
+        }
       } else {
         setRegError(data.error || 'Registrace se nezdařila');
       }
@@ -408,6 +417,13 @@ export default function AccountClient({ userOrders, userReturns, allProducts }: 
           <span>Odhlásit se</span>
         </button>
       </div>
+
+      {isVerified && (
+        <div className="mb-8 p-4 rounded-lg bg-emerald-950/40 border border-emerald-500/40 flex items-center gap-3 text-xs text-emerald-300 font-mono">
+          <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+          <span>Váš e-mail byl úspěšně ověřen. Váš RUN VIP účet je plně aktivní.</span>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Navigation Sidebar Tabs (3 cols) */}

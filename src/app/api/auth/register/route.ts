@@ -54,6 +54,34 @@ export async function POST(req: NextRequest) {
       name: `${user.first_name} ${user.last_name}`,
     });
 
+    // Trigger Supabase Auth sign up for email verification if configured
+    let supabaseNeedsVerification = false;
+    try {
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+      const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+      if (supabaseUrl && supabaseKey) {
+        const origin = req.nextUrl.origin;
+        const { createClient } = await import('@/utils/supabase/server');
+        const supabase = createClient();
+        const { data: supaData, error: supaError } = await supabase.auth.signUp({
+          email: email.toLowerCase().trim(),
+          password,
+          options: {
+            data: {
+              first_name: firstName.trim(),
+              last_name: lastName.trim(),
+            },
+            emailRedirectTo: `${origin}/auth/confirm?next=/account`,
+          },
+        });
+        if (!supaError && supaData?.user && !supaData.session) {
+          supabaseNeedsVerification = true;
+        }
+      }
+    } catch (supaErr) {
+      console.warn('Supabase auth signup trigger notice:', supaErr);
+    }
+
     const isHttps = req.nextUrl.protocol === 'https:' || req.headers.get('x-forwarded-proto') === 'https';
     const res = NextResponse.json({ success: true, user });
     res.cookies.set('run_customer_token', token, {

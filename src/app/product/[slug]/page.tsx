@@ -4,7 +4,18 @@ import db from '@/lib/db';
 import { Product, Review } from '@/types';
 import ProductDetailClient from './ProductDetailClient';
 
-export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
+
+export function generateStaticParams() {
+  try {
+    const products = db.prepare('SELECT slug FROM products').all() as { slug: string }[];
+    return products.map((p) => ({
+      slug: p.slug,
+    }));
+  } catch {
+    return [];
+  }
+}
 
 interface ProductPageProps {
   params: {
@@ -13,7 +24,9 @@ interface ProductPageProps {
 }
 
 export default function ProductPage({ params }: ProductPageProps) {
-  const p = db.prepare('SELECT * FROM products WHERE slug = ?').get(params.slug) as any;
+  const rawSlug = params?.slug ? decodeURIComponent(params.slug) : '';
+  const p = (db.prepare('SELECT * FROM products WHERE slug = ?').get(rawSlug) ||
+             db.prepare('SELECT * FROM products WHERE slug = ?').get(params?.slug)) as any;
 
   if (!p) {
     notFound();

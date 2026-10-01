@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ověření vašeho účtu RUN</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #050505;
+      color: #ffffff;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    table {
+      border-collapse: collapse;
+    }
+    a {
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body style="margin: 0; padding: 40px 10px; background-color: #050505;">
+  <center>
+    <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 580px; margin: 0 auto; background-color: #0d0d0d; border: 1px solid #222222; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.8);">
+      
+      <!-- Top Minimal Bar -->
+      <tr>
+        <td style="padding: 12px 32px; background-color: #141414; border-bottom: 1px solid #1f1f1f; text-align: center;">
+          <span style="font-family: 'Courier New', monospace; font-size: 11px; letter-spacing: 2px; color: #888888; text-transform: uppercase;">
+            RUN CLOTHING BRAND &bull; OFFICIAL DROP 01 ACCESS
+          </span>
+        </td>
+      </tr>
+
+      <!-- Brand Logo Header -->
+      <tr>
+        <td style="padding: 40px 32px 24px 32px; text-align: center;">
+          <div style="font-size: 38px; font-weight: 900; letter-spacing: 6px; color: #ffffff; text-transform: uppercase; line-height: 1;">
+            RUN<span style="color: #666666; font-size: 20px; vertical-align: super; font-weight: 300;">&trade;</span>
+          </div>
+          <div style="margin-top: 8px; font-size: 11px; letter-spacing: 3px; color: #a0a0a0; text-transform: uppercase;">
+            MOVE DIFFERENT.
+          </div>
+        </td>
+      </tr>
+
+      <!-- Content Section -->
+      <tr>
+        <td style="padding: 0 36px 36px 36px; text-align: center;">
+          
+          <div style="height: 1px; background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%); margin-bottom: 32px;"></div>
+
+          <h1 style="margin: 0 0 16px 0; font-size: 22px; font-weight: 700; color: #ffffff; letter-spacing: 0.5px;">
+            Aktivace členského účtu
+          </h1>
+
+          <p style="margin: 0 0 28px 0; font-size: 14px; line-height: 1.6; color: #b0b0b0;">
+            Vítejte v RUN klubu. Pro dokončení registrace, zajištění přístupu k limitovaným dropům a správě objednávek ověřte prosím svou e-mailovou adresu.
+          </p>
+
+          <!-- 1-Click Button -->
+          <table role="presentation" border="0" cellspacing="0" cellpadding="0" style="margin: 0 auto 32px auto; width: 100%;">
+            <tr>
+              <td align="center">
+                <a href="{{ .ConfirmationURL }}" target="_blank" style="display: inline-block; width: 100%; max-width: 380px; padding: 16px 24px; background-color: #ffffff; color: #000000; font-size: 13px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; text-align: center; border-radius: 8px; box-sizing: border-box; transition: all 0.2s ease;">
+                  OVĚŘIT MŮJ ÚČET &rarr;
+                </a>
+              </td>
+            </tr>
+          </table>
+
+          <!-- 6-digit OTP code alternative -->
+          <div style="background-color: #121212; border: 1px dashed #2e2e2e; border-radius: 12px; padding: 20px; margin-bottom: 30px;">
+            <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: #888888; margin-bottom: 10px;">
+              Nebo zadejte tento 6místný kód:
+            </div>
+            <div style="font-family: 'Courier New', Courier, monospace; font-size: 32px; font-weight: 800; letter-spacing: 8px; color: #ffffff;">
+              {{ .Token }}
+            </div>
+            <div style="font-size: 11px; color: #666666; margin-top: 8px;">
+              Platnost kódu vyprší za 24 hodin.
+            </div>
+          </div>
+
+          <!-- Brand Statement -->
+          <div style="padding: 16px 20px; background-color: #080808; border-left: 2px solid #ffffff; text-align: left; margin-bottom: 28px;">
+            <div style="font-size: 11px; font-style: italic; color: #888888; letter-spacing: 0.5px;">
+              &bdquo;YOU&rsquo;LL NEVER DO IT. YOU HAVE NOTHING.&ldquo;
+            </div>
+            <div style="font-size: 10px; color: #555555; margin-top: 4px; letter-spacing: 1px; text-transform: uppercase;">
+              &mdash; RUN INTO ZERO MANIFEST
+            </div>
+          </div>
+
+          <p style="margin: 0; font-size: 12px; line-height: 1.5; color: #555555;">
+            Pokud jste si účet na webu RUN nezakládali, můžete tuto zprávu bez obav ignorovat. Váš e-mail nebude aktivován.
+          </p>
+
+        </td>
+      </tr>
+
+      <!-- Footer -->
+      <tr>
+        <td style="padding: 24px 32px; background-color: #080808; border-top: 1px solid #1a1a1a; text-align: center;">
+          <p style="margin: 0 0 6px 0; font-size: 11px; color: #666666; letter-spacing: 1px; text-transform: uppercase;">
+            &copy; 2026 RUN CLOTHING BRAND. VŠECHNA PRÁVA VYHRAZENA.
+          </p>
+          <p style="margin: 0; font-size: 11px; color: #444444;">
+            Praha, Česká republika &bull; <a href="https://runclothing.com" style="color: #666666; text-decoration: underline;">runclothing.com</a>
+          </p>
+        </td>
+      </tr>
+
+    </table>
+  </center>
+</body>
+</html>
