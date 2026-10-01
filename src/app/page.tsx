@@ -104,8 +104,15 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* Ambient Bottom Bar */}
-        <div className="absolute bottom-4 right-6 z-10 hidden sm:flex items-center space-x-6 text-[10px] font-mono text-zinc-400">
+        {/* Ambient Bottom Bar & Scroll Indicator */}
+        <div className="absolute bottom-5 left-6 sm:left-8 z-10 flex items-center space-x-3 text-[10px] font-mono text-zinc-400">
+          <div className="w-1.5 h-6 rounded-full border border-white/40 flex items-start justify-center p-0.5">
+            <span className="w-1 h-1.5 bg-white rounded-full animate-bounce"></span>
+          </div>
+          <span className="tracking-widest uppercase">SCROLL TO DISCOVER / DROP 01</span>
+        </div>
+
+        <div className="absolute bottom-5 right-6 sm:right-8 z-10 hidden sm:flex items-center space-x-6 text-[10px] font-mono text-zinc-400">
           <span>550 GSM HEAVY FAUX-FUR</span>
           <span>•</span>
           <span>14.5 OZ DENIM</span>
@@ -113,6 +120,30 @@ export default function HomePage() {
           <span>AIR RUNNING UNIT</span>
         </div>
       </section>
+
+      {/* INFINITE EDITORIAL STREETWEAR TICKER */}
+      <div className="bg-white text-black py-2.5 overflow-hidden select-none border-y border-white">
+        <div className="flex whitespace-nowrap animate-marquee">
+          {[...Array(3)].map((_, i) => (
+            <div key={i} className="flex items-center space-x-6 mx-4 text-xs font-black tracking-widest uppercase">
+              <span>RUN INTO ZERO</span>
+              <span>✦</span>
+              <span>DROP 01 LIVE</span>
+              <span>✦</span>
+              <span>550 GSM HEAVY FAUX-FUR</span>
+              <span>✦</span>
+              <span>LIMITED ARCHIVE PIECES</span>
+              <span>✦</span>
+              <span>DOPRAVA ZDARMA NAD 2 500 KČ</span>
+              <span>✦</span>
+              <span>YOU HAVE NOTHING</span>
+              <span>✦</span>
+              <span>CRAFTED IN EUROPE</span>
+              <span>✦</span>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* 2. VALUE PROPOSITIONS BAR */}
       <section className="border-b border-[#18181f] bg-[#0c0c0f] py-4 px-4">

@@ -14,6 +14,7 @@ export default function CartDrawer() {
     cart,
     isOpen,
     setIsOpen,
+    addToCart,
     removeFromCart,
     updateQuantity,
     subtotal,
@@ -165,6 +166,52 @@ export default function CartDrawer() {
                   </div>
                 </div>
               ))
+            )}
+
+            {/* Quick Outfit Recommendation Upsell */}
+            {cart.length > 0 && !cart.some((it) => it.slug?.includes('tshirt')) && (
+              <div className="p-3 bg-[#131318] border border-[#272730] rounded-lg mt-4">
+                <span className="text-[10px] font-mono tracking-wider text-zinc-400 uppercase block mb-2">
+                  DOPORUČUJEME DO KOMBINACE:
+                </span>
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center space-x-2.5 min-w-0">
+                    <img
+                      src="/images/products/tshirt-white-front.jpg"
+                      alt="RUN Boxy T-Shirt"
+                      className="w-10 h-12 object-cover rounded bg-[#1b1b22] flex-shrink-0"
+                    />
+                    <div className="min-w-0">
+                      <p className="text-xs font-bold text-white truncate">
+                        RUN Boxy T-Shirt — White
+                      </p>
+                      <p className="text-[11px] font-mono text-zinc-300">
+                        {formatPrice(1490)} • 280 GSM
+                      </p>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      addToCart({
+                        id: '6-L-Pure White',
+                        productId: 6,
+                        name: 'RUN "YOU HAVE NOTHING" Heavyweight Boxy T-Shirt — White',
+                        slug: 'run-you-have-nothing-heavyweight-boxy-tshirt-white',
+                        price: 1490,
+                        image: '/images/products/tshirt-white-front.jpg',
+                        size: 'L',
+                        color: 'Pure White',
+                        quantity: 1,
+                        status: 'SKLADEM',
+                      });
+                    }}
+                    className="flex-shrink-0 bg-white hover:bg-zinc-200 text-black text-[11px] font-black px-3 py-1.5 rounded transition-colors uppercase"
+                  >
+                    + PŘIDAT
+                  </button>
+                </div>
+              </div>
             )}
           </div>
 

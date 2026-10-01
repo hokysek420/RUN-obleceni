@@ -18,6 +18,8 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -28,10 +30,52 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Keyboard shortcut: Cmd+K / Ctrl+K to open search
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setSearchOpen((prev) => !prev);
+      }
+      if (e.key === 'Escape' && searchOpen) {
+        setSearchOpen(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [searchOpen]);
+
+  // Live debounced search query fetch
+  useEffect(() => {
+    if (!searchQuery.trim()) {
+      setSearchResults([]);
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      setIsSearching(true);
+      try {
+        const res = await fetch(`/api/products?q=${encodeURIComponent(searchQuery.trim())}&limit=6`);
+        const data = await res.json();
+        if (data.success) {
+          setSearchResults(data.products || []);
+        }
+      } catch (err) {
+        console.error('Search fetch error:', err);
+      } finally {
+        setIsSearching(false);
+      }
+    }, 200);
+
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
+
   // Close menus on route change
   useEffect(() => {
     setMobileMenuOpen(false);
     setSearchOpen(false);
+    setSearchQuery('');
+    setSearchResults([]);
   }, [pathname]);
 
   const navLinks = [
@@ -157,18 +201,23 @@ export default function Header() {
 
       {/* Live Search Modal */}
       {searchOpen && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-start justify-center pt-24 px-4 animate-in fade-in duration-200">
-          <div className="bg-[#0e0e12] border border-[#27272a] rounded-lg max-w-2xl w-full p-6 shadow-2xl relative">
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-start justify-center pt-20 px-4 animate-in fade-in duration-200">
+          <div className="bg-[#0e0e12] border border-[#27272a] rounded-xl max-w-2xl w-full p-6 shadow-2xl relative overflow-hidden">
             <button
               onClick={() => setSearchOpen(false)}
-              className="absolute top-5 right-5 text-zinc-400 hover:text-white"
+              className="absolute top-5 right-5 text-zinc-400 hover:text-white transition-colors"
             >
               <X className="w-6 h-6" />
             </button>
 
-            <h3 className="text-xs uppercase tracking-widest text-zinc-500 font-bold mb-3">
-              VYHLEDAT V KOLEKCI RUN
-            </h3>
+            <div className="flex items-center justify-between mb-3 pr-8">
+              <h3 className="text-xs uppercase tracking-widest text-zinc-400 font-bold">
+                VYHLEDAT V KOLEKCI RUN
+              </h3>
+              <span className="hidden sm:inline-block text-[10px] font-mono text-zinc-500 bg-[#1a1a22] px-2 py-0.5 rounded border border-[#2c2c36]">
+                ESC pro zavření
+              </span>
+            </div>
 
             <form
               onSubmit={(e) => {
@@ -185,31 +234,90 @@ export default function Header() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Hledejte mikiny, trička, kalhoty, boty..."
-                className="w-full bg-[#18181b] border border-[#2e2e34] rounded px-4 py-3.5 pl-11 text-white placeholder-zinc-500 focus:outline-none focus:border-white text-sm"
+                className="w-full bg-[#18181b] border border-[#2e2e34] rounded-lg px-4 py-3.5 pl-11 pr-24 text-white placeholder-zinc-500 focus:outline-none focus:border-white text-sm"
               />
               <Search className="w-5 h-5 text-zinc-400 absolute left-3.5 top-4" />
 
               <button
                 type="submit"
-                className="absolute right-2 top-2 bg-white text-black font-bold text-xs px-4 py-2 rounded hover:bg-zinc-200 transition-colors"
+                className="absolute right-2 top-2 bg-white text-black font-bold text-xs px-4 py-2 rounded-md hover:bg-zinc-200 transition-colors"
               >
                 HLEDAT
               </button>
             </form>
 
+            {/* Live Interactive Results */}
+            {searchQuery.trim() && (
+              <div className="mt-4 pt-3 border-t border-[#1f1f24]">
+                <div className="flex items-center justify-between text-[11px] font-mono text-zinc-400 mb-2">
+                  <span>VÝSLEDKY HLEDÁNÍ ({searchResults.length})</span>
+                  {isSearching && <span className="text-zinc-500">Vyhledávám...</span>}
+                </div>
+
+                {searchResults.length > 0 ? (
+                  <div className="space-y-2 max-h-72 overflow-y-auto pr-1">
+                    {searchResults.map((product) => (
+                      <Link
+                        key={product.id}
+                        href={`/product/${product.slug}`}
+                        onClick={() => setSearchOpen(false)}
+                        className="flex items-center justify-between p-2.5 bg-[#141418] hover:bg-[#1c1c24] border border-[#222228] hover:border-zinc-500 rounded-lg transition-all group"
+                      >
+                        <div className="flex items-center space-x-3">
+                          <div className="w-12 h-14 bg-[#1b1b22] rounded overflow-hidden flex-shrink-0">
+                            <img
+                              src={product.primary_image}
+                              alt={product.name}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                            />
+                          </div>
+                          <div>
+                            <span className="text-[10px] font-mono text-zinc-400 uppercase">
+                              {product.category}
+                            </span>
+                            <h4 className="text-xs font-bold text-white group-hover:text-zinc-200 line-clamp-1">
+                              {product.name}
+                            </h4>
+                            <div className="flex items-center gap-2 mt-0.5">
+                              <span className="text-xs font-mono font-bold text-white">
+                                {formatPrice(product.sale_price || product.price)}
+                              </span>
+                              {product.status && (
+                                <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-[#202028] text-zinc-300">
+                                  {product.status}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        <ArrowRight className="w-4 h-4 text-zinc-500 group-hover:text-white transition-colors group-hover:translate-x-1" />
+                      </Link>
+                    ))}
+                  </div>
+                ) : (
+                  !isSearching && (
+                    <div className="py-6 text-center text-xs text-zinc-400">
+                      Žádný produkt neodpovídá výrazu &ldquo;{searchQuery}&rdquo;.
+                    </div>
+                  )
+                )}
+              </div>
+            )}
+
             {/* Quick Suggestions */}
-            <div className="mt-6 pt-4 border-t border-[#1f1f24]">
+            <div className="mt-5 pt-4 border-t border-[#1f1f24]">
               <span className="text-[11px] uppercase tracking-wider text-zinc-500 font-semibold block mb-2">
-                Často hledané:
+                Populární kategorie & hledání:
               </span>
               <div className="flex flex-wrap gap-2">
                 {['Teddy Fur Hoodie', 'Denim Jeans', 'Air Sneaker', 'Boxy T-Shirt', 'Předobjednávka', 'Drop 01'].map((tag) => (
                   <button
                     key={tag}
                     onClick={() => {
-                      window.location.href = `/shop?q=${encodeURIComponent(tag)}`;
+                      setSearchQuery(tag);
                     }}
-                    className="text-xs bg-[#18181b] hover:bg-[#27272a] text-zinc-300 hover:text-white px-3 py-1.5 rounded border border-[#27272a] transition-colors"
+                    className="text-xs bg-[#18181b] hover:bg-[#27272a] text-zinc-300 hover:text-white px-3 py-1.5 rounded-md border border-[#27272a] transition-colors"
                   >
                     {tag}
                   </button>

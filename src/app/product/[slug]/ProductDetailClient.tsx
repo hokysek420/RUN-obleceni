@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import {
   Heart,
@@ -38,7 +38,7 @@ export default function ProductDetailClient({
   reviews: initialReviews,
   relatedProducts,
 }: ProductDetailClientProps) {
-  const { addToCart } = useCart();
+  const { addToCart, setIsOpen } = useCart();
   const { isInWishlist, toggleWishlist } = useWishlist();
   const { formatPrice } = useCurrency();
 
@@ -51,6 +51,18 @@ export default function ProductDetailClient({
 
   // Active Tab for Media: 'gallery' | '3d' | 'video'
   const [mediaMode, setMediaMode] = useState<'gallery' | '3d' | 'video'>('gallery');
+
+  // Sticky Buy Bar & Toast Notification
+  const [showStickyBar, setShowStickyBar] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowStickyBar(window.scrollY > 480);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   // Variants
   const variants = product.variants || [];
@@ -103,7 +115,9 @@ export default function ProductDetailClient({
     });
 
     setAdded(true);
+    setToastMessage(`✓ ${product.name} (${selectedSize}) přidáno do košíku`);
     setTimeout(() => setAdded(false), 2000);
+    setTimeout(() => setToastMessage(null), 3500);
   };
 
   // Buy Now handler
@@ -795,6 +809,84 @@ export default function ProductDetailClient({
           </div>
         </div>
       )}
+
+      {/* Toast Alert Notification */}
+      {toastMessage && (
+        <div className="fixed bottom-24 sm:bottom-8 right-4 sm:right-8 z-50 bg-[#121216]/95 border border-white/20 text-white px-5 py-3.5 rounded-lg shadow-2xl backdrop-blur-md flex items-center space-x-3 animate-in slide-in-from-bottom-5 duration-200">
+          <div className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></div>
+          <span className="text-xs font-medium">{toastMessage}</span>
+          <button
+            onClick={() => setIsOpen(true)}
+            className="text-xs font-bold underline ml-2 text-zinc-300 hover:text-white"
+          >
+            Košík →
+          </button>
+        </div>
+      )}
+
+      {/* Sticky Bottom Add To Cart Bar */}
+      <div
+        className={`fixed bottom-0 left-0 right-0 z-40 bg-[#0e0e12]/95 backdrop-blur-md border-t border-[#222228] px-4 py-3 transition-transform duration-300 ${
+          showStickyBar ? 'translate-y-0' : 'translate-y-full'
+        }`}
+      >
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+          <div className="flex items-center space-x-3 min-w-0">
+            <div className="w-10 h-12 bg-[#18181f] rounded overflow-hidden flex-shrink-0">
+              <img src={images[0]} alt={product.name} className="w-full h-full object-cover" />
+            </div>
+            <div className="min-w-0">
+              <h4 className="text-xs font-bold text-white truncate">{product.name}</h4>
+              <div className="flex items-center space-x-2 text-[11px] font-mono text-zinc-400">
+                <span className="text-white font-bold">{formatPrice(product.sale_price || product.price)}</span>
+                <span>•</span>
+                <span>{selectedSize ? `Velikost: ${selectedSize}` : 'Zvolte velikost'}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-3 flex-shrink-0">
+            {/* Quick Size Select */}
+            {sizes.length > 1 && (
+              <select
+                value={selectedSize}
+                onChange={(e) => setSelectedSize(e.target.value)}
+                className="bg-[#18181e] border border-[#2e2e38] text-white text-xs rounded px-2.5 py-2 font-mono focus:outline-none"
+              >
+                {sizes.map((s) => (
+                  <option key={s} value={s}>{s}</option>
+                ))}
+              </select>
+            )}
+
+            <button
+              onClick={handleAddToCart}
+              disabled={isOutOfStock}
+              className={`px-5 py-2.5 rounded text-xs font-black uppercase tracking-wider transition-all flex items-center gap-1.5 ${
+                added
+                  ? 'bg-emerald-500 text-white'
+                  : isOutOfStock
+                  ? 'bg-[#1e1e24] text-zinc-500 cursor-not-allowed'
+                  : 'bg-white text-black hover:bg-zinc-200'
+              }`}
+            >
+              {added ? (
+                <>
+                  <Check className="w-3.5 h-3.5" />
+                  <span>PŘIDÁNO</span>
+                </>
+              ) : isOutOfStock ? (
+                'VYPRODÁNO'
+              ) : (
+                <>
+                  <ShoppingBag className="w-3.5 h-3.5" />
+                  <span>DO KOŠÍKU</span>
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
