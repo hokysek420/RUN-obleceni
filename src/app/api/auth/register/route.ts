@@ -54,34 +54,39 @@ export async function POST(req: NextRequest) {
       name: `${user.first_name} ${user.last_name}`,
     });
 
-    // Trigger Supabase Auth sign up for email verification if configured
-    let supabaseNeedsVerification = false;
+    // Sync to Supabase Auth & public.users table
     try {
       const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-      const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
-      if (supabaseUrl && supabaseKey) {
-        const origin = req.nextUrl.origin;
-        const { createClient } = await import('@/utils/supabase/server');
-        const supabase = createClient();
-        const { data: supaData, error: supaError } = await supabase.auth.signUp({
-          email: email.toLowerCase().trim(),
-          password,
-          options: {
-            data: {
+      const secretKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+      if (supabaseUrl && secretKey) {
+        const { createClient } = await import('@supabase/supabase-js');
+        const supabaseAdmin = createClient(supabaseUrl, secretKey, {
+          auth: {
+            autoRefreshToken: false,
+            persistSession: false,
+          },
+        });
+
+        // 1. Create in Supabase Auth (confirmed without sending email)
+        if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+          const { data: supaAuth, error: authErr } = await supabaseAdmin.auth.admin.createUser({
+            email: email.toLowerCase().trim(),
+            password,
+            email_confirm: true,
+            user_metadata: {
               first_name: firstName.trim(),
               last_name: lastName.trim(),
             },
-            emailRedirectTo: `${origin}/auth/confirm?next=/account`,
-          },
-        });
-        if (supaError) {
-          console.error('Supabase auth.signUp error:', supaError.message, supaError.status);
-        } else {
-          console.log('User synced to Supabase Auth:', supaData?.user?.id);
+          });
+          if (authErr) {
+            console.warn('Supabase auth.admin.createUser warning:', authErr.message);
+          } else {
+            console.log('User created in Supabase Auth:', supaAuth?.user?.id);
+          }
         }
 
-        // Also sync profile to Supabase public.users table
-        const { error: dbError } = await supabase.from('users').insert({
+        // 2. Insert into public.users table (bypasses RLS)
+        const { error: dbError } = await supabaseAdmin.from('users').upsert({
           email: email.toLowerCase().trim(),
           password_hash: passwordHash,
           first_name: firstName.trim(),
@@ -91,15 +96,16 @@ export async function POST(req: NextRequest) {
           city: city || null,
           zip: zip || null,
           country: country || 'Česká republika',
-        });
+        }, { onConflict: 'email' });
+
         if (dbError) {
-          console.error('Supabase public.users insert notice:', dbError.message);
+          console.error('Supabase public.users insert error:', dbError.message);
         } else {
-          console.log('User synced to Supabase public.users table');
+          console.log('User synced to Supabase public.users table successfully');
         }
       }
     } catch (supaErr) {
-      console.warn('Supabase auth signup trigger notice:', supaErr);
+      console.warn('Supabase sync notice:', supaErr);
     }
 
     const isHttps = req.nextUrl.protocol === 'https:' || req.headers.get('x-forwarded-proto') === 'https';
