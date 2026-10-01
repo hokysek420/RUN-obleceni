@@ -3,17 +3,39 @@ import path from 'path';
 import fs from 'fs';
 import bcrypt from 'bcryptjs';
 
-const DB_DIR = path.join(process.cwd(), 'data');
-if (!fs.existsSync(DB_DIR)) {
-  fs.mkdirSync(DB_DIR, { recursive: true });
+const isVercel = process.env.VERCEL === '1' || !!process.env.AWS_LAMBDA_FUNCTION_NAME;
+const BUNDLED_DB_PATH = path.join(process.cwd(), 'data', 'run.db');
+
+let DB_PATH = BUNDLED_DB_PATH;
+if (isVercel) {
+  const tmpDbPath = path.join('/tmp', 'run.db');
+  try {
+    if (!fs.existsSync(tmpDbPath)) {
+      if (fs.existsSync(BUNDLED_DB_PATH)) {
+        fs.copyFileSync(BUNDLED_DB_PATH, tmpDbPath);
+      }
+    }
+    DB_PATH = tmpDbPath;
+  } catch (err) {
+    console.warn('Error copying db to /tmp on Vercel:', err);
+    DB_PATH = tmpDbPath;
+  }
+} else {
+  const DB_DIR = path.join(process.cwd(), 'data');
+  if (!fs.existsSync(DB_DIR)) {
+    fs.mkdirSync(DB_DIR, { recursive: true });
+  }
 }
 
-const DB_PATH = path.join(DB_DIR, 'run.db');
 const db = new Database(DB_PATH);
 
 // Enable WAL mode for high concurrency and performance
-db.pragma('journal_mode = WAL');
-db.pragma('foreign_keys = ON');
+try {
+  db.pragma('journal_mode = WAL');
+  db.pragma('foreign_keys = ON');
+} catch (e) {
+  console.warn('Pragma setup warning:', e);
+}
 
 export function initDatabase() {
   // Schema creation
