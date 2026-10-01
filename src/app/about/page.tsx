@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { ArrowRight, ShieldCheck, Sparkles, Layers } from 'lucide-react';
 import RunLogo from '@/components/RunLogo';
+import CreatorsSection from '@/components/CreatorsSection';
 
 export default function AboutPage() {
   return (
@@ -91,6 +92,11 @@ export default function AboutPage() {
               Limitované série obsahují unikátní kód osvědčení pravosti. Garance originality a sběratelské hodnoty.
             </p>
           </div>
+        </div>
+
+        {/* Creators Section */}
+        <div className="pt-8 border-t border-[#18181f]">
+          <CreatorsSection />
         </div>
 
         {/* CTA */}

@@ -6,6 +6,7 @@ import db from '@/lib/db';
 import { Product } from '@/types';
 import ProductCard from '@/components/ProductCard';
 import Home3DShowroom from '@/components/Home3DShowroom';
+import CreatorsSection from '@/components/CreatorsSection';
 
 // Force dynamic rendering so changes in admin immediately reflect on homepage!
 export const dynamic = 'force-dynamic';
@@ -437,6 +438,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* 9. LIDÉ, KTEŘÍ NA TOM PRACOVALI */}
+      <CreatorsSection />
     </div>
   );
 }
