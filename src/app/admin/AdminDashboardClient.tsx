@@ -359,7 +359,6 @@ export default function AdminDashboardClient({
               { id: 'community', label: 'Komunitní galerie', icon: Camera, badge: community.filter((c) => c.status === 'PENDING').length },
               { id: 'discounts', label: 'Slevové kódy', icon: Tag },
               { id: 'giftCards', label: 'Dárkové poukazy', icon: Gift },
-              { id: 'appointments', label: 'Rezervace schůzek', icon: Calendar, badge: appointments.filter((a) => a.status === 'PENDING').length },
               { id: 'content', label: 'Správa obsahu (CMS)', icon: FileText },
               { id: 'media', label: 'Knihovna médií', icon: ImageIcon },
               { id: 'settings', label: 'Nastavení obchodu', icon: Settings },
@@ -964,33 +963,6 @@ export default function AdminDashboardClient({
             </div>
           )}
 
-          {/* 9. APPOINTMENTS */}
-          {activeTab === 'appointments' && (
-            <div className="space-y-6">
-              <h1 className="font-display text-2xl uppercase tracking-tight text-white">
-                REZERVACE V SHOWROOMU ({appointments.length})
-              </h1>
-              <div className="space-y-3">
-                {appointments.map((a) => (
-                  <div key={a.id} className="p-4 bg-[#0d0d12] border border-[#222228] rounded-lg flex items-center justify-between gap-4 text-xs font-mono">
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <strong className="text-white text-sm">{a.customer_name}</strong>
-                        <span className="text-zinc-500">{a.customer_email} ({a.customer_phone})</span>
-                      </div>
-                      <div className="text-cyan-400 font-bold">
-                        {a.type} • {a.date} v {a.time}
-                      </div>
-                      {a.notes && <div className="text-zinc-400 text-[11px]">Poznámka: {a.notes}</div>}
-                    </div>
-                    <span className="px-2.5 py-1 rounded bg-[#1e1e24] text-white">
-                      {a.status}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
 
           {/* 10. CMS CONTENT MANAGEMENT */}
           {activeTab === 'content' && (

@@ -17,7 +17,7 @@ export default function PrivacyPage() {
         <section className="space-y-2">
           <h2 className="font-display text-sm uppercase text-white font-bold">1. SPRÁVCE OSOBNÍCH ÚDAJŮ</h2>
           <p>
-            Správcem osobních údajů je společnost RUN Clothing s.r.o., Revoluční 12, Praha 1, e-mail: privacy@runclothing.com.
+            Správcem osobních údajů je internetový obchod RUN Clothing, kontaktní e-mail: privacy@runclothing.com.
           </p>
         </section>
 

@@ -30,7 +30,7 @@ export default function QualityPage() {
             <code className="text-white bg-black px-1.5 py-0.5 rounded font-mono">RUN-CERT-DROP1-0892</code>). Tento certifikát je fyzicky přiložen v prémiovém packagingu a zároveň digitálně zapsán v naší centrální databázi.
           </p>
           <div className="p-4 bg-[#141418] border border-[#222228] rounded text-xs font-mono text-zinc-400">
-            Pravost svého certifikátu můžete kdykoliv ověřit prostřednictvím zákaznické podpory RUN nebo v showroomu v Praze.
+            Pravost svého certifikátu můžete kdykoliv ověřit prostřednictvím oficiální zákaznické podpory RUN (info@runclothing.com).
           </div>
         </div>
 

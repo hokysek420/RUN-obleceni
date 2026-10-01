@@ -45,8 +45,8 @@ export default function CheckoutPage() {
   const [bCountry, setBCountry] = useState('Česká republika');
 
   // Delivery & Payment selection
-  const [deliveryMethod, setDeliveryMethod] = useState<'Zásilkovna' | 'Kurýrní služba' | 'Osobní odběr'>('Zásilkovna');
-  const [pickupPoint, setPickupPoint] = useState('Výdejní místo / Z-BOX Praha Revoluční 12');
+  const [deliveryMethod, setDeliveryMethod] = useState<'Zásilkovna' | 'Kurýrní služba'>('Zásilkovna');
+  const [pickupPoint, setPickupPoint] = useState('');
   const [paymentMethod, setPaymentMethod] = useState<'Platba kartou' | 'Apple Pay' | 'Bankovní převod' | 'Dobírka'>('Platba kartou');
 
   // Discounts & Gift Cards
@@ -84,7 +84,6 @@ export default function CheckoutPage() {
   if (!hasFreeShipping) {
     if (deliveryMethod === 'Zásilkovna') shippingPrice = 79;
     if (deliveryMethod === 'Kurýrní služba') shippingPrice = 119;
-    if (deliveryMethod === 'Osobní odběr') shippingPrice = 0;
   }
 
   // COD fee
@@ -516,34 +515,6 @@ export default function CheckoutPage() {
                 <span className="font-mono text-xs font-bold text-white">
                   {hasFreeShipping ? <span className="text-emerald-400">ZDARMA</span> : '119 Kč'}
                 </span>
-              </label>
-
-              {/* Osobní odběr Showroom */}
-              <label
-                className={`flex items-start justify-between p-3.5 border rounded-lg cursor-pointer transition-colors ${
-                  deliveryMethod === 'Osobní odběr'
-                    ? 'border-white bg-[#14141a]'
-                    : 'border-[#222228] bg-[#0f0f13] hover:border-zinc-600'
-                }`}
-              >
-                <div className="flex items-start space-x-3">
-                  <input
-                    type="radio"
-                    name="delivery"
-                    checked={deliveryMethod === 'Osobní odběr'}
-                    onChange={() => setDeliveryMethod('Osobní odběr')}
-                    className="mt-1 text-white focus:ring-0"
-                  />
-                  <div>
-                    <span className="font-bold text-xs text-white block">
-                      Osobní odběr — RUN Showroom Praha
-                    </span>
-                    <span className="text-[11px] text-zinc-400">
-                      Revoluční 12, Praha 1 • Vyzkoušení a káva zdarma
-                    </span>
-                  </div>
-                </div>
-                <span className="font-mono text-xs font-bold text-emerald-400">ZDARMA</span>
               </label>
             </div>
           </div>

@@ -126,10 +126,8 @@ export default function InvoicePrintButton({ order, items }: InvoicePrintButtonP
           <div class="parties">
             <div class="party-box">
               <h4>DODAVATEL:</h4>
-              <strong>RUN CLOTHING S.R.O.</strong><br />
-              Revoluční 12<br />
-              110 00 Praha 1, Česká republika<br />
-              IČO: 19842026 | DIČ: CZ19842026<br />
+              <strong>RUN CLOTHING</strong><br />
+              Internetový obchod značky RUN<br />
               Účet: 2100894562/2010 (Fio banka a.s.)<br />
               E-mail: info@runclothing.com
             </div>

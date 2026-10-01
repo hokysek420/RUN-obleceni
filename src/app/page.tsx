@@ -51,13 +51,16 @@ export default function HomePage() {
       <section className="relative min-h-[85vh] sm:min-h-[92vh] flex items-end justify-start overflow-hidden border-b border-[#1f1f26]">
         {/* Background Image with Dark Vignette */}
         <div className="absolute inset-0 z-0">
-          <img
-            src={heroContent.bgImage || '/images/editorial/campaign-hero-models.jpg'}
-            alt="RUN Campaign"
-            className="w-full h-full object-cover object-center filter brightness-[0.7] contrast-[1.1] scale-100 hover:scale-105 transition-transform duration-1000"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#080809] via-[#080809]/40 to-transparent" />
-          <div className="absolute inset-0 bg-radial-gradient from-transparent via-[#080809]/30 to-[#080809]/90" />
+          <picture>
+            <source srcSet="/images/editorial/campaign-hero-models.webp" type="image/webp" />
+            <img
+              src={heroContent.bgImage || '/images/editorial/campaign-hero-models.jpg'}
+              alt="RUN Campaign"
+              className="w-full h-full object-cover object-center filter brightness-[0.78] contrast-[1.08] scale-100 hover:scale-105 transition-transform duration-1000"
+            />
+          </picture>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#080809] via-[#080809]/30 to-transparent" />
+          <div className="absolute inset-0 bg-radial-gradient from-transparent via-[#080809]/20 to-[#080809]/80" />
         </div>
 
         {/* Hero Content */}

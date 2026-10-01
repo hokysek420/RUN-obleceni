@@ -724,7 +724,7 @@ function seedInitialData() {
         name: 'RUN Clothing',
         email: 'info@runclothing.com',
         phone: '+420 777 000 RUN',
-        address: 'RUN Showroom & Studio, Revoluční 12, 110 00 Praha 1, Česká republika',
+        address: '',
         companyId: '19842026',
         vatId: 'CZ19842026'
       },

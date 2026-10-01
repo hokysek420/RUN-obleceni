@@ -19,7 +19,7 @@ export default function AnnouncementBar() {
         <div className="hidden md:flex items-center space-x-4 text-[11px] tracking-widest text-[#71717a]">
           <span>COLLECTION ONE / DROP 01</span>
           <span>•</span>
-          <span className="text-[#e4e4e7]">PRAHA SHOWROOM OPEN</span>
+          <span className="text-[#e4e4e7]">OFFICIAL ONLINE STORE</span>
         </div>
 
         <div className="flex-1 text-center font-medium tracking-wide text-[11px] sm:text-xs text-white">

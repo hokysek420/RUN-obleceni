@@ -224,7 +224,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/contact" className="hover:text-white transition-colors">
-                  Kontakt & Showroom
+                  Kontakt & Podpora
                 </Link>
               </li>
             </ul>
@@ -247,11 +247,6 @@ export default function Footer() {
               <li>
                 <Link href="/community" className="hover:text-white transition-colors">
                   Fotogalerie komunity
-                </Link>
-              </li>
-              <li>
-                <Link href="/appointments" className="hover:text-white transition-colors">
-                  Rezervace showroomu
                 </Link>
               </li>
               <li>

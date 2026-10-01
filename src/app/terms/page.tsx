@@ -17,7 +17,7 @@ export default function TermsPage() {
         <section className="space-y-2">
           <h2 className="font-display text-sm uppercase text-white font-bold">1. ÚVODNÍ USTANOVENÍ</h2>
           <p>
-            Tyto obchodní podmínky platí pro nákup v internetovém obchodě RUN Clothing provozovaném společností RUN Clothing s.r.o., se sídlem Revoluční 12, 110 00 Praha 1, IČO: 19842026.
+            Tyto obchodní podmínky platí pro nákup v internetovém obchodě značky RUN Clothing (oficiální kontakt: info@runclothing.com).
           </p>
         </section>
 

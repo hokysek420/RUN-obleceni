@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Mail, Phone, MapPin, CheckCircle2, Send, Clock, Building2 } from 'lucide-react';
+import { Mail, Phone, CheckCircle2, Send, Clock, ShieldCheck, MessageSquare } from 'lucide-react';
 
 export default function ContactPage() {
   const [name, setName] = useState('');
@@ -32,57 +32,67 @@ export default function ContactPage() {
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-white space-y-12">
       <div className="text-center space-y-3 max-w-xl mx-auto">
         <span className="text-[10px] font-mono tracking-widest text-zinc-500 uppercase">
-          KONTAKT & ATELIÉR
+          ZÁKAZNICKÁ PODPORA & KONTAKT
         </span>
         <h1 className="font-display text-3xl sm:text-5xl uppercase tracking-tight">
           SPOJTE SE S TÝMEM RUN
         </h1>
         <p className="text-xs sm:text-sm text-zinc-400">
-          Máte dotaz k objednávce, velikostem nebo přejete domluvit spolupráci? Napište nám nebo navštivte náš showroom.
+          Máte dotaz k objednávce, velikostem, materiálům nebo přejete domluvit spolupráci? Jsme vám plně k dispozici.
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
         {/* Contact info card (5 cols) */}
         <div className="md:col-span-5 bg-[#0e0e12] border border-[#222228] p-6 sm:p-8 rounded-lg space-y-6 text-xs">
-          <div className="space-y-4">
-            <h2 className="font-display text-base uppercase text-white tracking-wide">
-              RUN ATELIÉR & SHOWROOM
-            </h2>
-            <div className="flex items-start space-x-3 text-zinc-300">
-              <MapPin className="w-4 h-4 text-zinc-400 flex-shrink-0 mt-0.5" />
-              <div>
-                <strong className="text-white block">Revoluční 12</strong>
-                110 00 Praha 1, Česká republika
-              </div>
+          <div className="space-y-5">
+            <div>
+              <h2 className="font-display text-base uppercase text-white tracking-wide mb-1">
+                ONLINE ZÁKAZNICKÝ SERVIS
+              </h2>
+              <p className="text-zinc-500 text-[11px] font-mono">
+                Oficiální podpora pro e-shopové objednávky a dotazy.
+              </p>
             </div>
 
             <div className="flex items-center space-x-3 text-zinc-300">
               <Mail className="w-4 h-4 text-zinc-400 flex-shrink-0" />
-              <span>info@runclothing.com</span>
+              <div>
+                <span className="text-zinc-500 text-[10px] uppercase font-mono block">E-mailová podpora</span>
+                <span className="text-white font-medium">info@runclothing.com</span>
+              </div>
             </div>
 
             <div className="flex items-center space-x-3 text-zinc-300">
               <Phone className="w-4 h-4 text-zinc-400 flex-shrink-0" />
-              <span>+420 777 000 RUN (+420 777 000 786)</span>
+              <div>
+                <span className="text-zinc-500 text-[10px] uppercase font-mono block">Infolinka</span>
+                <span className="text-white font-medium">+420 777 000 RUN (+420 777 000 786)</span>
+              </div>
             </div>
 
             <div className="flex items-start space-x-3 text-zinc-300">
               <Clock className="w-4 h-4 text-zinc-400 flex-shrink-0 mt-0.5" />
               <div>
-                <span className="text-white font-bold block">Otevírací doba showroomu:</span>
-                Po – Pá: 12:00 – 19:00<br />
-                So: 11:00 – 17:00 (nebo na rezervaci)
+                <span className="text-white font-bold block">Doba odezvy podpory:</span>
+                <span>Po – Pá: 09:00 – 18:00</span>
+                <span className="text-zinc-500 block text-[11px]">Standardně odpovídáme do 24 hodin</span>
               </div>
             </div>
           </div>
 
-          <div className="pt-4 border-t border-[#1b1b22]">
+          <div className="pt-4 border-t border-[#1b1b22] space-y-2">
             <Link
-              href="/appointments"
+              href="/track"
               className="w-full block text-center bg-[#18181f] hover:bg-zinc-800 text-white font-bold text-xs uppercase py-2.5 rounded transition-colors"
             >
-              Rezervovat privátní zkoušku →
+              Sledovat stav vaší zásilky →
+            </Link>
+            <Link
+              href="/returns"
+              className="w-full block text-center border border-[#27272a] hover:bg-zinc-900 text-zinc-400 hover:text-white font-bold text-xs uppercase py-2 rounded transition-colors"
+            >
+              Vrácení zboží do 14 dnů
             </Link>
           </div>
         </div>
