@@ -74,8 +74,28 @@ export async function POST(req: NextRequest) {
             emailRedirectTo: `${origin}/auth/confirm?next=/account`,
           },
         });
-        if (!supaError && supaData?.user && !supaData.session) {
-          supabaseNeedsVerification = true;
+        if (supaError) {
+          console.error('Supabase auth.signUp error:', supaError.message, supaError.status);
+        } else {
+          console.log('User synced to Supabase Auth:', supaData?.user?.id);
+        }
+
+        // Also sync profile to Supabase public.users table
+        const { error: dbError } = await supabase.from('users').insert({
+          email: email.toLowerCase().trim(),
+          password_hash: passwordHash,
+          first_name: firstName.trim(),
+          last_name: lastName.trim(),
+          phone: phone || null,
+          street: street || null,
+          city: city || null,
+          zip: zip || null,
+          country: country || 'Česká republika',
+        });
+        if (dbError) {
+          console.error('Supabase public.users insert notice:', dbError.message);
+        } else {
+          console.log('User synced to Supabase public.users table');
         }
       }
     } catch (supaErr) {
