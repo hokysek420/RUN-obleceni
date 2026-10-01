@@ -56,7 +56,7 @@ export default function HomePage() {
             <img
               src={heroContent.bgImage || '/images/editorial/campaign-hero-models.jpg'}
               alt="RUN Campaign"
-              className="w-full h-full object-cover object-center filter brightness-[0.78] contrast-[1.08] scale-100 hover:scale-105 transition-transform duration-1000"
+              className="w-full h-full object-cover object-center filter brightness-[0.88] contrast-[1.04] scale-100 hover:scale-105 transition-transform duration-1000"
             />
           </picture>
           <div className="absolute inset-0 bg-gradient-to-t from-[#080809] via-[#080809]/30 to-transparent" />
