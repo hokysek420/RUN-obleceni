@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Heart, Plus, Check } from 'lucide-react';
+import { Heart, Plus, Check, Box } from 'lucide-react';
 import { Product } from '@/types';
 import { useCurrency } from '@/context/CurrencyContext';
 import { useWishlist } from '@/context/WishlistContext';
@@ -21,6 +21,35 @@ export default function ProductCard({ product }: ProductCardProps) {
   const [quickAddOpen, setQuickAddOpen] = useState(false);
   const [selectedSize, setSelectedSize] = useState<string>('');
   const [added, setAdded] = useState(false);
+
+  // 3D Perspective Tilt & Specular Glare
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [glare, setGlare] = useState({ x: 50, y: 50, opacity: 0 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const rotateX = ((y - centerY) / centerY) * -6; // max 6 deg
+    const rotateY = ((x - centerX) / centerX) * 6;  // max 6 deg
+
+    setTilt({ x: rotateX, y: rotateY });
+    setGlare({
+      x: (x / rect.width) * 100,
+      y: (y / rect.height) * 100,
+      opacity: 0.16,
+    });
+  };
+
+  const handleMouseLeave = () => {
+    setHovered(false);
+    setQuickAddOpen(false);
+    setTilt({ x: 0, y: 0 });
+    setGlare({ x: 50, y: 50, opacity: 0 });
+  };
 
   const isFavorited = isInWishlist(product.id);
 
@@ -94,13 +123,28 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   return (
     <div
-      className="group relative flex flex-col bg-[#0c0c0f] border border-[#1b1b22] hover:border-[#383844] rounded-sm transition-all duration-300"
+      className="group relative flex flex-col bg-[#0c0c0f] border border-[#1b1b22] hover:border-[#383844] rounded-lg transition-all duration-300 overflow-hidden"
       onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => {
-        setHovered(false);
-        setQuickAddOpen(false);
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      style={{
+        transform: hovered
+          ? `perspective(900px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) translateY(-5px)`
+          : 'none',
+        transition: hovered
+          ? 'transform 0.08s ease-out, border-color 0.3s ease, box-shadow 0.3s ease'
+          : 'transform 0.4s ease-out, border-color 0.3s ease, box-shadow 0.3s ease',
+        boxShadow: hovered ? '0 20px 40px -15px rgba(0,0,0,0.7), 0 0 20px 0 rgba(255,255,255,0.03)' : 'none',
       }}
     >
+      {/* 3D Specular Light Flare */}
+      <div
+        className="absolute inset-0 pointer-events-none z-10 transition-opacity duration-300"
+        style={{
+          background: `radial-gradient(circle at ${glare.x}% ${glare.y}%, rgba(255,255,255,${glare.opacity}) 0%, transparent 60%)`,
+        }}
+      />
+
       {/* Top Badges & Wishlist */}
       <div className="absolute top-3 left-3 right-3 z-20 flex items-center justify-between pointer-events-none">
         <span
@@ -111,21 +155,29 @@ export default function ProductCard({ product }: ProductCardProps) {
           {product.status}
         </span>
 
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            toggleWishlist(product.id);
-          }}
-          className={`p-1.5 rounded-full pointer-events-auto transition-colors backdrop-blur-md ${
-            isFavorited
-              ? 'bg-red-500 text-white'
-              : 'bg-black/50 text-zinc-400 hover:text-white hover:bg-black/80'
-          }`}
-          aria-label="Přidat do oblíbených"
-        >
-          <Heart className={`w-3.5 h-3.5 ${isFavorited ? 'fill-current' : ''}`} />
-        </button>
+        <div className="flex items-center space-x-1.5">
+          {/* 3D Model Badge */}
+          <span className="hidden sm:inline-flex items-center gap-1 bg-black/75 backdrop-blur-md text-cyan-400 border border-cyan-500/40 text-[9px] font-mono tracking-wider px-2 py-0.5 rounded shadow-lg">
+            <Box className="w-2.5 h-2.5 animate-spin" />
+            3D
+          </span>
+
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              toggleWishlist(product.id);
+            }}
+            className={`p-1.5 rounded-full pointer-events-auto transition-colors backdrop-blur-md ${
+              isFavorited
+                ? 'bg-red-500 text-white'
+                : 'bg-black/50 text-zinc-400 hover:text-white hover:bg-black/80'
+            }`}
+            aria-label="Přidat do oblíbených"
+          >
+            <Heart className={`w-3.5 h-3.5 ${isFavorited ? 'fill-current' : ''}`} />
+          </button>
+        </div>
       </div>
 
       {/* Image Area with Link */}

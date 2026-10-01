@@ -5,7 +5,7 @@ import { ArrowRight, ShieldCheck, Truck, RefreshCw, Sparkles, Layers, Box } from
 import db from '@/lib/db';
 import { Product } from '@/types';
 import ProductCard from '@/components/ProductCard';
-import Product3DViewer from '@/components/Product3DViewer';
+import Home3DShowroom from '@/components/Home3DShowroom';
 
 // Force dynamic rendering so changes in admin immediately reflect on homepage!
 export const dynamic = 'force-dynamic';
@@ -361,35 +361,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 6. INTERACTIVE 3D PRODUCT VIEWER SPOTLIGHT */}
+      {/* 6. INTERACTIVE 3D PRODUCT VIEWER SHOWROOM */}
       <section className="py-20 bg-[#0c0c10] border-y border-[#1f1f26]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-12">
-            <div className="max-w-md space-y-4">
-              <span className="text-[11px] font-mono tracking-widest uppercase text-cyan-400 flex items-center gap-2">
-                <Box className="w-4 h-4" />
-                <span>ARCHITEKTURA ODĚVU & 3D STUDIO</span>
-              </span>
-              <h2 className="text-3xl sm:text-5xl font-black uppercase text-white tracking-tight">
-                PROZKOUMEJTE SILUETU VE 3D
-              </h2>
-              <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
-                Každý detail je propracovaný do mikronu. Zkontrolujte proporce střihu, robustnost lešení, chromové odlesky a drátěnou wireframe topologii přímo v interaktivním 3D okně.
-              </p>
-              <div className="pt-2 flex flex-wrap gap-2 text-[11px] font-mono text-zinc-400">
-                <span className="bg-[#18181e] px-2.5 py-1 rounded border border-[#2b2b36]">360° Rotace</span>
-                <span className="bg-[#18181e] px-2.5 py-1 rounded border border-[#2b2b36]">PBR Shading</span>
-                <span className="bg-[#18181e] px-2.5 py-1 rounded border border-[#2b2b36]">Wireframe Mode</span>
-              </div>
-            </div>
-
-            <div className="w-full lg:w-3/5">
-              <Product3DViewer
-                productName="RUN Cyber-Chunky Air Sneaker"
-                category="Footwear"
-              />
-            </div>
-          </div>
+          <Home3DShowroom />
         </div>
       </section>
 
