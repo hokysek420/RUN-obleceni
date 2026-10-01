@@ -56,11 +56,11 @@ export default function HomePage() {
             <img
               src={heroContent.bgImage || '/images/editorial/campaign-hero-models.jpg'}
               alt="RUN Campaign"
-              className="w-full h-full object-cover object-center filter brightness-[0.88] contrast-[1.04] scale-100 hover:scale-105 transition-transform duration-1000"
+              className="w-full h-full object-cover object-top filter brightness-100 contrast-[1.05] transition-transform duration-1000"
             />
           </picture>
-          <div className="absolute inset-0 bg-gradient-to-t from-[#080809] via-[#080809]/30 to-transparent" />
-          <div className="absolute inset-0 bg-radial-gradient from-transparent via-[#080809]/20 to-[#080809]/80" />
+          {/* Subtle bottom fade to seamlessly blend into dark page */}
+          <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#080809] to-transparent pointer-events-none" />
         </div>
 
         {/* Hero Content */}
