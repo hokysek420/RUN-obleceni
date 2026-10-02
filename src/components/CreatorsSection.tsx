@@ -1,5 +1,8 @@
+'use client';
+
 import React from 'react';
-import { Sparkles, Terminal, Palette, ShieldCheck } from 'lucide-react';
+import { Sparkles, ShieldCheck } from 'lucide-react';
+import MotionReveal from './ui/MotionReveal';
 
 interface Creator {
   name: string;
@@ -31,10 +34,10 @@ const creators: Creator[] = [
 
 export default function CreatorsSection() {
   return (
-    <section className="py-20 bg-[#070709] border-t border-[#1a1a22]">
+    <section className="py-20 bg-[#070709] border-t border-[#18181f]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-14 space-y-3">
+        <MotionReveal className="text-center max-w-2xl mx-auto mb-14 space-y-3">
           <div className="inline-flex items-center space-x-2 bg-white/5 border border-white/10 px-3 py-1 rounded-full">
             <Sparkles className="w-3.5 h-3.5 text-zinc-400" />
             <span className="text-[10px] font-mono tracking-widest uppercase text-zinc-300">
@@ -47,13 +50,14 @@ export default function CreatorsSection() {
           <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed font-light">
             Kolektiv stojící za vznikem značky RUN, architekturou oděvních střihů, výběrem materiálů a realizací první oficiální kolekce Drop 01.
           </p>
-        </div>
+        </MotionReveal>
 
         {/* Creators Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-          {creators.map((c) => (
-            <div
+          {creators.map((c, idx) => (
+            <MotionReveal
               key={c.name}
+              delay={idx * 0.15}
               className="group relative bg-[#0d0d12] border border-[#202028] hover:border-zinc-500 rounded-xl p-8 transition-all duration-300 hover:shadow-2xl overflow-hidden flex flex-col justify-between"
             >
               {/* Subtle Ambient Background Glow on Hover */}
@@ -95,17 +99,17 @@ export default function CreatorsSection() {
                   </span>
                 ))}
               </div>
-            </div>
+            </MotionReveal>
           ))}
         </div>
 
         {/* Bottom Verification Note */}
-        <div className="mt-12 text-center">
+        <MotionReveal delay={0.3} className="mt-12 text-center">
           <div className="inline-flex items-center space-x-2 text-[11px] font-mono text-zinc-500">
             <ShieldCheck className="w-4 h-4 text-zinc-400" />
             <span>OFFICIAL RUN BRAND TEAM • ALL RIGHTS RESERVED © 2026</span>
           </div>
-        </div>
+        </MotionReveal>
       </div>
     </section>
   );
